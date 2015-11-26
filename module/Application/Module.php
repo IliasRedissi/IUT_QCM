@@ -24,14 +24,14 @@ class Module
         $moduleRouteListener->attach($eventManager);
         $serviceManager = $e->getApplication()->getServiceManager();
 
-        /*$eventManager->attach(MvcEvent::EVENT_DISPATCH, array(
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH, array(
             $this,
             'boforeDispatch'
         ), 100);
         $eventManager->attach(MvcEvent::EVENT_DISPATCH, array(
             $this,
             'afterDispatch'
-        ), -100);*/
+        ), -100);
     }
 
     function boforeDispatch(MvcEvent $event){
