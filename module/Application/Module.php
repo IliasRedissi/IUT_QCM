@@ -55,7 +55,7 @@ class Module
 
         if ($session->offsetExists ( 'email' )) {
             if ($requestedResourse == 'Application\Controller\Login-index' || in_array ( $requestedResourse, $whiteList )) {
-                $url = '/application/index';
+                $url = '/';
                 $response->setHeaders ( $response->getHeaders ()->addHeaderLine ( 'Location', $url ) );
                 $response->setStatusCode ( 302 );
             }

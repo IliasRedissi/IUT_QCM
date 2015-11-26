@@ -10,12 +10,12 @@ namespace Application\Controller;
 
 use Zend\Session\Container;
 use Zend\View\Model\ViewModel;
-use MyLib\Controller\AppController;
+use Application\Controller\IndexController;
 use Application\Form\LoginForm;
 use Application\Form\Filter\LoginFilter;
-use MyLib\Utility\UserPassword;
+use Application\Utility\UserPassword;
 
-class LoginController extends AppController
+class LoginController extends IndexController
 {
     protected $storage;
     protected $authservice;
@@ -38,6 +38,7 @@ class LoginController extends AppController
                 $userPassword = new UserPassword();
                 $encyptPass = $userPassword->create($data['password']);
 
+                $this->flashMessenger()->addMessage(array('password' => $encyptPass));
                 $this->getAuthService()
                     ->getAdapter()
                     ->setIdentity($data['email'])

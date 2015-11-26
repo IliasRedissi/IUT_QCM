@@ -10,7 +10,7 @@ namespace Application\Form\Filter;
 
 use Zend\InputFilter\InputFilter;
 
-class LoginFilter
+class LoginFilter extends InputFilter
 {
     public function __construct(){
 
