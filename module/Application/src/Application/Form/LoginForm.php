@@ -21,19 +21,33 @@ class LoginForm extends Form
 
         $this->add(array(
             'name' => 'email',
-            'type' => 'text',
+            'attributes' => array(
+                'type'  => 'email',
+                'id'    => 'email',
+                'class' => 'mdl-textfield__input',
+            ),
             'options' => array(
                 'label' => 'Email',
+                'label_attributes' => array(
+                    'class' => 'mdl-textfield__label',
+                ),
                 'id' => 'email',
-                'placeholder' => 'example@example.com'
+                'placeholder' => 'example@example.com',
             )
         ));
 
         $this->add(array(
             'name' => 'password',
-            'type' => 'password',
+            'attributes' => array(
+                'type'  => 'password',
+                'id'    => 'password',
+                'class' => 'mdl-textfield__input',
+            ),
             'options' => array(
                 'label' => 'Password',
+                'label_attributes' => array(
+                    'class' => 'mdl-textfield__label',
+                ),
                 'id' => 'password',
                 'placeholder' => '**********'
             )
@@ -54,6 +68,7 @@ class LoginForm extends Form
             'attributes' => array(
                 'type' => 'submit',
                 'value' => 'Submit',
+                'class' => 'mdl-button mdl-button--accent mdl-js-button mdl-js-ripple-effect',
             ),
         ));
     }

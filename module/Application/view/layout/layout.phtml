@@ -15,6 +15,7 @@
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
                         ->headLink(array('rel' => 'stylesheet', 'href' => 'https://storage.googleapis.com/code.getmdl.io/1.0.6/material.indigo-pink.min.css'))
                         ->headLink(array('rel' => 'stylesheet', 'href' => 'https://fonts.googleapis.com/icon?family=Material+Icons'))
+                        ->headLink(array('rel' => 'stylesheet', 'type' => 'text/css', 'href' => 'http://fonts.googleapis.com/css?family=Roboto:300,400,500,700'))
                         ->prependStylesheet($this->basePath() . '/css/style.css')
                         ->prependStylesheet($this->basePath() . '/css/bootstrap-theme.min.css')
                         ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css') ?>
@@ -30,7 +31,7 @@
 
     </head>
     <body>
-        <div class="mdl-layout mdl-js-layout">
+        <div class="mdl-layout mdl-js-layout mdl-color--grey-100">
             <header class="mdl-layout__header">
                 <div class="mdl-layout-icon"></div>
                 <div class="mdl-layout__header-row">
@@ -44,8 +45,9 @@
                 </div>
             </header>
             <main class="mdl-layout__content">
+                <?php echo $this->content; ?>
                 <div class="container">
-                    <?php echo $this->content; ?>
+
                 </div> <!-- /container -->
             </main>
             <footer class="mdl-mini-footer">

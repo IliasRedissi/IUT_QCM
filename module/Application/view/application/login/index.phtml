@@ -21,43 +21,36 @@ if (count($flashMessage)) :
     </ul>
 </div>
 <?php endif; ?>
-<div class="row">
-    <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Login</h3>
-            </div>
-            <div class="panel-body">
-                <?php
-                $form = $this->loginForm;
-                $form->prepare();
-                echo $this->form()->openTag($form);
-                ?>
-                <table>
-                    <tr>
-                        <td><?php echo $this->formlabel($form->get('email'));?></td>
-                        <td><?php echo $this->formElement($form->get('email')); ?>
-                            <span class="common-error-msg"><?php echo $this->formElementErrors($form->get('email'));?></span></td>
-                    </tr>
-                    <tr>
-                        <td><?php echo $this->formlabel($form->get('password'));?></td>
-                        <td><?php echo $this->formElement($form->get('password')); ?>
-                            <span class="common-error-msg"><?php echo $this->formElementErrors($form->get('password'));?></span></td>
-                    </tr>
-                    <tr>
-                        <td>&nbsp;</td>
-                        <td>
-                            <?php
-                            echo $this->formRow($form->get('loginCsrf'));
-                            echo $this->formElement($form->get('submit'));
-                            ?>
-                        </td>
-                    </tr>
-                </table>
-                <?php
-                echo $this->form()->closeTag($form);
-                ?>
-            </div>
-        </div>
+<div class="mdl-card mdl-shadow--6dp">
+    <?php
+    $form = $this->loginForm;
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    ?>
+    <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
+        <h2 class="mdl-card__title-text">Login</h2>
     </div>
+    <div class="mdl-card__supporting-text">
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <?php echo $this->formElement($form->get('email'));
+            echo $this->formlabel($form->get('email'));?>
+            <span class="mdl-textfield__error"><?php echo $this->formElementErrors($form->get('email'));?></span>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <?php echo $this->formElement($form->get('password'));
+            echo $this->formlabel($form->get('password'));?>
+            <span class="mdl-textfield__error"><?php echo $this->formElementErrors($form->get('password'));?></span>
+        </div>
+
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+        <?php
+        echo $this->formRow($form->get('loginCsrf'));
+        echo $this->formElement($form->get('submit'));
+        ?>
+    </div>
+    <?php
+    echo $this->form()->closeTag($form);
+    ?>
 </div>

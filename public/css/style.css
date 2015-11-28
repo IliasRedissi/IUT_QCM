@@ -1,8 +1,3 @@
-/*body {
-    padding-top: 60px;
-    padding-bottom: 40px;
-}*/
-
 .zf-green {
     color: #68b604;
 }
@@ -30,12 +25,6 @@
   background-color: #57a900;
 }
 
-div.container a.brand {
-    background: url("../img/zf2-logo.png") no-repeat scroll 0 10px transparent;
-    margin-left: 0;
-    padding: 8px 20px 12px 40px;
-}
-
 html, body {
     height: 100%;
     min-height: 100%;
@@ -43,11 +32,6 @@ html, body {
 
 main {
     position: relative;
-}
-
-.container > * {
-    margin-left: auto;
-    margin-right: auto;
 }
 
 td {
@@ -67,4 +51,16 @@ footer p {
     bottom: 0px !important;
     margin-right: 8px !important;
     margin-bottom: 8px !important;
+}
+
+label {
+    margin-bottom: 0 !important;
+}
+
+.mdl-layout__content {
+    flex: 1;
+    display: flex !important;
+    flex-flow: column !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
