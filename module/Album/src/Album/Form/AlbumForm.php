@@ -16,24 +16,41 @@ use Zend\Form\Form;
          ));
          $this->add(array(
              'name' => 'title',
-             'type' => 'Text',
+             'attributes' => array(
+                 'type'  => 'Text',
+                 'id'    => 'title',
+                 'class' => 'mdl-textfield__input',
+             ),
              'options' => array(
                  'label' => 'Title',
+                 'label_attributes' => array(
+                     'class' => 'mdl-textfield__label',
+                 ),
+                 'id' => 'title',
              ),
          ));
          $this->add(array(
              'name' => 'artist',
-             'type' => 'Text',
+             'attributes' => array(
+                 'type'  => 'Text',
+                 'id'    => 'artist',
+                 'class' => 'mdl-textfield__input',
+             ),
              'options' => array(
                  'label' => 'Artist',
+                 'label_attributes' => array(
+                     'class' => 'mdl-textfield__label',
+                 ),
+                 'id' => 'artist',
              ),
          ));
          $this->add(array(
              'name' => 'submit',
-             'type' => 'Submit',
              'attributes' => array(
+                 'type' => 'submit',
                  'value' => 'Go',
-                 'id' => 'submitbutton',
+                 'id' => 'submit',
+                 'class' => 'mdl-button mdl-button--accent mdl-js-button mdl-js-ripple-effect',
              ),
          ));
      }
