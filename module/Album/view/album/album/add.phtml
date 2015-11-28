@@ -4,15 +4,39 @@
 $title = 'Add new album';
  $this->headTitle($title);
  ?>
- <h1><?php echo $this->escapeHtml($title); ?></h1>
- <?php
-/** @var Album\Form\AlbumForm $form */
-$form->setAttribute('action', $this->url('album', array('action' => 'add')));
- $form->prepare();
 
- echo $this->form()->openTag($form);
- echo $this->formHidden($form->get('id'));
- echo $this->formRow($form->get('title'));
- echo $this->formRow($form->get('artist'));
- echo $this->formSubmit($form->get('submit'));
- echo $this->form()->closeTag();
+ <div class="mdl-card mdl-shadow--6dp">
+    <?php
+    /** @var Album\Form\AlbumForm $form */
+    $form = $this->form;
+    $form->setAttribute('action', $this->url('album', array('action' => 'add')));
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    echo $this->formHidden($form->get('id'));
+    ?>
+<div class="mdl-card__title mdl-color--primary mdl-color-text--white">
+    <h2 class="mdl-card__title-text"><?php echo $this->escapeHtml($title); ?></h2>
+</div>
+<div class="mdl-card__supporting-text">
+
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <?php echo $this->formElement($form->get('title'));
+        echo $this->formlabel($form->get('title'));?>
+        <span class="mdl-textfield__error"><?php echo $this->formElementErrors($form->get('title'));?></span>
+    </div>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <?php echo $this->formElement($form->get('artist'));
+        echo $this->formlabel($form->get('artist'));?>
+        <span class="mdl-textfield__error"><?php echo $this->formElementErrors($form->get('artist'));?></span>
+    </div>
+
+</div>
+<div class="mdl-card__actions mdl-card--border">
+    <?php
+    echo $this->formElement($form->get('submit'));
+    ?>
+</div>
+<?php
+echo $this->form()->closeTag($form);
+?>
+</div>
