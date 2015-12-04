@@ -76,6 +76,7 @@ return array(
             'Application\Controller\Index' => 'Application\Controller\IndexController',
             'Application\Controller\Login' => 'Application\Controller\LoginController',
             'Application\Controller\Logout' => 'Application\Controller\LogoutController',
+            'Application\Controller\SignUp' => 'Application\Controller\SignUpController',
         ),
     ),
     'view_manager' => array(
