@@ -20,8 +20,10 @@ $title = 'Add new album';
 <div class="mdl-card__supporting-text">
 
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <?php echo $this->formElement($form->get('title'));
-        echo $this->formlabel($form->get('title'));?>
+        <?php
+        echo $this->formElement($form->get('title'));
+        echo $this->formlabel($form->get('title'));
+        ?>
         <span class="mdl-textfield__error"><?php echo $this->formElementErrors($form->get('title'));?></span>
     </div>
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
