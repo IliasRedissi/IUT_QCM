@@ -75,11 +75,4 @@ class LoginController extends IndexController
         }
         return $this->authservice;
     }
-
-    public function logoutAction(){
-        $session = new Container('User');
-        $session->getManager()->destroy();
-        $this->getAuthService()->clearIdentity();
-        return $this->redirect()->toUrl('/application/login');
-    }
 }
