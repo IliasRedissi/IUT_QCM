@@ -19,6 +19,7 @@ class Module
 {
     public function onBootstrap(MvcEvent $e)
     {
+        $viewModel = $e->getApplication()->getMvcEvent()->getViewModel();
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
@@ -32,6 +33,9 @@ class Module
             $this,
             'afterDispatch'
         ), -100);
+
+        $session = new Container('User');
+        $viewModel->connected = $session->offsetExists ( 'email' );
     }
 
     function boforeDispatch(MvcEvent $event){
