@@ -79,7 +79,16 @@ class IndexController extends AbstractActionController
         $view->setVariable('loginForm', $loginForm);
         return $view;
     }
-    public function logoutAction(){
+
+    private function _getUserDetails($where, $columns)
+    {
+        $userTable = $this->getServiceLocator()->get("UserTable");
+        $users = $userTable->getUsers($where, $columns);
+        return $users;
+    }
+
+    public function logoutAction()
+    {
         $authService = $this->getServiceLocator()->get('AuthService');
 
         $session = new Container('User');
@@ -89,10 +98,66 @@ class IndexController extends AbstractActionController
         return $this->redirect()->toUrl('/login');
     }
 
-    private function _getUserDetails($where, $columns)
+    public function signupAction()
     {
-        $userTable = $this->getServiceLocator()->get("UserTable");
-        $users = $userTable->getUsers($where, $columns);
-        return $users;
+        $request = $this->getRequest();
+
+        $view = new ViewModel();
+        $signupForm = new LoginForm('signupForm');
+        $signupForm->setInputFilter(new SignUpFilter());
+
+        if ($request->isPost()) {
+            $data = $request->getPost();
+            $signupForm->setData($data);
+
+            if ($signupForm->isValid()) {
+                $data = $signupForm->getData();
+
+                $userPassword = new UserPassword();
+                $encyptPass = $userPassword->create($data['password']);
+
+                $authService = $this->getServiceLocator()->get('AuthService');
+
+                $authService->getAdapter()
+                    ->setIdentity($data['email'])
+                    ->setCredential($encyptPass);
+
+                $result = $authService->authenticate();
+
+                if ($result->isValid()) {
+
+                    $userDetails = $this->_getUserDetails(array(
+                        'email' => $data['email']
+                    ), array(
+                        'user_id'
+                    ));
+
+                    $session = new Container('User');
+                    $session->offsetSet('email', $data['email']);
+                    $session->offsetSet('userId', $userDetails[0]['user_id']);
+                    $session->offsetSet('roleId', $userDetails[0]['role_id']);
+                    $session->offsetSet('roleName', $userDetails[0]['role_name']);
+
+                    $this->flashMessenger()->addMessage(array(
+                        'success' => 'Sign Up Success.'
+                    ));
+                    // Redirect to page after successful login
+                } else {
+                    $this->flashMessenger()->addMessage(array(
+                        'error' => 'invalid credentials.'
+                    ));
+                    // Redirect to page after login failure
+                }
+                return $this->redirect()->tourl('/login');
+                // Logic for login authentication
+            } else {
+                $errors = $signupForm->getMessages();
+                // prx($errors);
+            }
+        }
+
+        $view->setVariable('loginForm', $signupForm);
+        return $view;
+
     }
 }
