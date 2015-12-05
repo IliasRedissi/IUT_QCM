@@ -2,26 +2,25 @@
 /**
  * Created by IntelliJ IDEA.
  * User: Ilias
- * Date: 26/11/2015
- * Time: 19:34
+ * Date: 05/12/2015
+ * Time: 13:41
  */
 
-namespace Application\Controller;
+namespace Auth\Controller;
 
 use Zend\Session\Container;
+use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Application\Controller\IndexController;
-use Application\Form\LoginForm;
-use Application\Form\Filter\LoginFilter;
-use Application\Utility\UserPassword;
+use Auth\Form\LoginForm;
+use Auth\Form\Filter\LoginFilter;
+use Auth\Utility\UserPassword;
 
-class LoginController extends IndexController
+class AuthController extends AbstractActionController
 {
     protected $storage;
     protected $authservice;
 
-    public function indexAction(){
-
+    public function loginAction(){
         $request = $this->getRequest();
 
         $view = new ViewModel();
@@ -56,7 +55,7 @@ class LoginController extends IndexController
                     $this->flashMessenger()->addMessage(array('error' => 'invalid credentials.'));
                     // Redirect to page after login failure
                 }
-                return $this->redirect()->tourl('/application/login');
+                return $this->redirect()->tourl('/auth/login');
                 // Logic for login authentication
             }else{
                 $errors = $loginForm->getMessages();
@@ -66,6 +65,13 @@ class LoginController extends IndexController
 
         $view->setVariable('loginForm', $loginForm);
         return $view;
+    }
+
+    public function logoutAction(){
+        $session = new Container('User');
+        $session->getManager()->destroy();
+        $this->getAuthService()->clearIdentity();
+        return $this->redirect()->toUrl('/auth');
     }
 
     private function getAuthService()

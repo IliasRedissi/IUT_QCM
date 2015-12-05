@@ -1,0 +1,56 @@
+<?php
+$flashMessage = $this->flashMessenger()->getMessages();
+if (count($flashMessage)) :
+?>
+<div class="row">
+    <ul>
+        <?php
+        foreach ($flashMessage as $msg) :
+            foreach ($msg as $type => $message) :
+                ?>
+                <li><span class="<?php echo $type; ?>"><?php echo $message; ?></span></li>
+            <?php endforeach; ?>
+        <?php endforeach; ?>
+    </ul>
+    <?php endif; ?>
+    <?php if(isset($this->messages)) : ?>
+    <ul>
+        <?php foreach ($this->messages as $type => $msg) : ?>
+            <li><span class="<?php echo $type; ?>"><?php echo $msg; ?></span></li>
+        <?php endforeach; ?>
+    </ul>
+</div>
+<?php endif; ?>
+<div class="mdl-card mdl-shadow--6dp">
+    <?php
+    $form = $this->signupForm;
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    ?>
+    <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
+        <h2 class="mdl-card__title-text">Sign Up</h2>
+    </div>
+    <div class="mdl-card__supporting-text">
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <?php echo $this->formElement($form->get('email'));
+            echo $this->formlabel($form->get('email'));?>
+            <span class="mdl-textfield__error"><?php echo $this->formElementErrors($form->get('email'));?></span>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <?php echo $this->formElement($form->get('password'));
+            echo $this->formlabel($form->get('password'));?>
+            <span class="mdl-textfield__error"><?php echo $this->formElementErrors($form->get('password'));?></span>
+        </div>
+
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+        <?php
+        echo $this->formRow($form->get('signupCsrf'));
+        echo $this->formElement($form->get('submit'));
+        ?>
+    </div>
+    <?php
+    echo $this->form()->closeTag($form);
+    ?>
+</div>

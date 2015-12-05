@@ -47,8 +47,9 @@ class Module
 
         /* Offline pages not needed authentication */
         $whiteList = array (
-            'Application\Controller\Login-index',
-            'Application\Controller\Signup-index',
+            'Auth\Controller\Auth-login',
+            'Auth\Controller\Auth-logout',
+            'Auth\Controller\Auth-signup',
         );
 
         $requestUri = $request->getRequestUri();
@@ -68,7 +69,7 @@ class Module
         }else{
 
             if ($requestedResourse != 'Application\Controller\Login-index' && ! in_array ( $requestedResourse, $whiteList )) {
-                $url = '/application/login';
+                $url = '/auth';
                 $response->setHeaders ( $response->getHeaders ()->addHeaderLine ( 'Location', $url ) );
                 $response->setStatusCode ( 302 );
             }
