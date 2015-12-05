@@ -32,7 +32,6 @@ class LoginForm extends Form
                     'class' => 'mdl-textfield__label',
                 ),
                 'id' => 'email',
-                'placeholder' => 'example@example.com',
             )
         ));
 
@@ -49,7 +48,6 @@ class LoginForm extends Form
                     'class' => 'mdl-textfield__label',
                 ),
                 'id' => 'password',
-                'placeholder' => '**********'
             )
         ));
 
