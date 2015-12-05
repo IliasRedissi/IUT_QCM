@@ -9,6 +9,7 @@
 
 namespace Application;
 
+use Zend\Debug\Debug;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Authentication\Adapter\DbTable as DbAuthAdapter;
@@ -46,7 +47,8 @@ class Module
 
         /* Offline pages not needed authentication */
         $whiteList = array (
-            'Users\Controller\Login-index'
+            'Application\Controller\Login-index',
+            'Application\Controller\Signup-index',
         );
 
         $requestUri = $request->getRequestUri();

@@ -10,6 +10,7 @@ namespace Application\Controller;
 
 use Application\Form\Filter\SignUpFilter;
 use Application\Form\SignUpForm;
+use Zend\Debug\Debug;
 use Zend\Session\Container;
 use Zend\View\Model\ViewModel;
 use Application\Controller\IndexController;
@@ -24,11 +25,9 @@ class SignUpController extends IndexController
 
         $session = new Container('User');
 
-
-        if ($session->getManager()->isValid()) {
-            return $this->redirect()->toUrl('/application/index');
+        if ($session->offsetExists ( 'email' )) {
+            return $this->redirect()->toUrl('/');
         }
-        //else
 
         $request = $this->getRequest();
 
