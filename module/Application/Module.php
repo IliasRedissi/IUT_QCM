@@ -61,14 +61,14 @@ class Module
         $session = new Container('User');
 
         if ($session->offsetExists ( 'email' )) {
-            if ($requestedResourse == 'Application\Controller\Login-index' || in_array ( $requestedResourse, $whiteList )) {
+            if (in_array ( $requestedResourse, $whiteList )) {
                 $url = '/';
                 $response->setHeaders ( $response->getHeaders ()->addHeaderLine ( 'Location', $url ) );
                 $response->setStatusCode ( 302 );
             }
         }else{
 
-            if ($requestedResourse != 'Application\Controller\Login-index' && ! in_array ( $requestedResourse, $whiteList )) {
+            if (! in_array ( $requestedResourse, $whiteList )) {
                 $url = '/auth';
                 $response->setHeaders ( $response->getHeaders ()->addHeaderLine ( 'Location', $url ) );
                 $response->setStatusCode ( 302 );
