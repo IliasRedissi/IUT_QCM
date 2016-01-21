@@ -1,0 +1,38 @@
+<?php
+// module/QCM/view/qcm/question/add.phtml:
+
+$title = 'Add new Question';
+$this->headTitle($title);
+?>
+
+<div class="mdl-card mdl-shadow--6dp">
+    <?php
+    /** @var QCM\Form\QuestionForm $form */
+    $form = $this->form;
+    $form->setAttribute('action', $this->url('album', array('action' => 'add')));
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    echo $this->formHidden($form->get('id'));
+    ?>
+    <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
+        <h2 class="mdl-card__title-text"><?php echo $this->escapeHtml($title); ?></h2>
+    </div>
+    <div class="mdl-card__supporting-text">
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <?php
+            echo $this->formElement($form->get('title'));
+            echo $this->formlabel($form->get('title'));
+            ?>
+            <span class="mdl-textfield__error"><?php echo $this->formElementErrors($form->get('title')); ?></span>
+        </div>
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+        <?php
+        echo $this->formElement($form->get('submit'));
+        ?>
+    </div>
+    <?php
+    echo $this->form()->closeTag($form);
+    ?>
+</div>
