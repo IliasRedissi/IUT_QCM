@@ -11,12 +11,23 @@ use QCM\Form\QuestionForm;
 class QuestionController extends AbstractActionController
 {
     protected $questionTable;
+    protected $answerTable;
+    protected $userAnswerTable;
 
     public function indexAction()
     {
         return new ViewModel(array(
             'questions' => $this->getQuestionTable()->fetchAll(),
         ));
+    }
+
+    public function getQuestionTable()
+    {
+        if (!$this->questionTable) {
+            $sm = $this->getServiceLocator();
+            $this->questionTable = $sm->get('QCM\Model\QuestionTable');
+        }
+        return $this->questionTable;
     }
 
     public function addAction()
@@ -42,10 +53,9 @@ class QuestionController extends AbstractActionController
         return array('form' => $form);
     }
 
-
     public function deleteAction()
     {
-        $id = (int) $this->params()->fromRoute('id', 0);
+        $id = (int)$this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute('question');
         }
@@ -55,7 +65,7 @@ class QuestionController extends AbstractActionController
             $del = $request->getPost('del', 'No');
 
             if ($del == 'Yes') {
-                $id = (int) $request->getPost('id');
+                $id = (int)$request->getPost('id');
                 $this->getQuestionTable()->deleteQuestion($id);
             }
 
@@ -64,17 +74,47 @@ class QuestionController extends AbstractActionController
         }
 
         return array(
-            'id'    => $id,
+            'id' => $id,
             'question' => $this->getQuestionTable()->getQuestion($id)
         );
     }
 
-    public function getQuestionTable()
+    public function showResultAction()
     {
-        if (!$this->questionTable) {
-            $sm = $this->getServiceLocator();
-            $this->questionTable = $sm->get('QCM\Model\QuestionTable');
+        $id = (int)$this->params()->fromRoute('id', 0);
+
+        if (!$id) {
+            return $this->redirect()->toRoute('question');
         }
-        return $this->questionTable;
+
+
+        $question = $this->getQuestionTable()->getQuestion($id);
+        $answers = $this->getAnswerTable()->fetchAll();
+        $userAnswers = $this->getUserAnswerTable()->fetchAll();
+
+
+        return new ViewModel(array(
+            'question' => $question,
+            'answers' => $answers,
+            'userAnswers' => $userAnswers
+        ));
+    }
+
+    public function getAnswerTable()
+    {
+        if (!$this->answerTable) {
+            $sm = $this->getServiceLocator();
+            $this->questionTable = $sm->get('QCM\Model\AnswerTable');
+        }
+        return $this->answerTable;
+    }
+
+    public function getUserAnswerTable()
+    {
+        if (!$this->userAnswerTable) {
+            $sm = $this->getServiceLocator();
+            $this->userAnswerTable = $sm->get('QCM\Model\UserAnswerTable');
+        }
+        return $this->userAnswerTable;
     }
 }
