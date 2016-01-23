@@ -1,19 +1,19 @@
 <?php
 // module/QCM/view/qcm/question/add.phtml:
 
-$title = 'Add new Question';
+$title = 'Add new Answer';
 $this->headTitle($title);
 ?>
 
 <div class="mdl-card mdl-shadow--6dp">
     <?php
-    /** @var QCM\Form\QuestionForm $form */
+    /** @var QCM\Form\AnswerForm $form */
     $form = $this->form;
-    $form->setAttribute('action', $this->url('qcm', array('action' => 'add')));
+    $form->setAttribute('action', $this->url('answer', array('action' => 'add', 'idQuestion' => $idQuestion)));
     $form->prepare();
     echo $this->form()->openTag($form);
     echo $this->formHidden($form->get('id'));
-    echo $this->formHidden($form->get('user'));
+    echo $this->formHidden($form->get('idQuestion'));
     ?>
     <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
         <h2 class="mdl-card__title-text"><?php echo $this->escapeHtml($title); ?></h2>
@@ -31,6 +31,7 @@ $this->headTitle($title);
     <div class="mdl-card__actions mdl-card--border">
         <?php
         echo $this->formElement($form->get('submit'));
+        echo $this->formElement($form->get('add'));
         ?>
     </div>
     <?php

@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Ilias
+ * Date: 21/01/2016
+ * Time: 15:42
+ */
 
 namespace QCM\Model;
 
@@ -6,18 +12,18 @@ use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 
-class Question
+class Answer
 {
     public $id;
-    public $user;
     public $title;
+    public $idQuestion;
     protected $inputFilter;
 
     public function exchangeArray($data)
     {
-        $this->id = (!empty($data['idQuestion'])) ? $data['idQuestion'] : null;
-        $this->user = (!empty($data['idUser'])) ? $data['idUser'] : null;
-        $this->title = (!empty($data['title'])) ? $data['title'] : null;
+        $this->id     = (!empty($data['idAnswer'])) ? $data['idAnswer'] : null;
+        $this->title  = (!empty($data['title'])) ? $data['title'] : null;
+        $this->idQuestion  = (!empty($data['idQuestion'])) ? $data['idQuestion'] : null;
     }
 
     public function getArrayCopy()
@@ -36,41 +42,43 @@ class Question
             $inputFilter = new InputFilter();
 
             $inputFilter->add(array(
-                'name' => 'id',
+                'name'     => 'id',
                 'required' => true,
-                'filters' => array(
+                'filters'  => array(
                     array('name' => 'Int'),
                 ),
             ));
 
             $inputFilter->add(array(
-                'name' => 'user',
+                'name'     => 'idQuestion',
                 'required' => true,
-                'filters' => array(
+                'filters'  => array(
                     array('name' => 'Int'),
                 ),
             ));
 
             $inputFilter->add(array(
-                'name' => 'title',
+                'name'     => 'title',
                 'required' => true,
-                'filters' => array(
+                'filters'  => array(
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
                 ),
                 'validators' => array(
                     array(
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => array(
                             'encoding' => 'UTF-8',
-                            'min' => 1,
-                            'max' => 100,
+                            'min'      => 1,
+                            'max'      => 100,
                         ),
                     ),
                 ),
             ));
+
             $this->inputFilter = $inputFilter;
         }
+
         return $this->inputFilter;
     }
 }

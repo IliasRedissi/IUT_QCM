@@ -1,0 +1,39 @@
+<?php
+// module/QCM/view/qcm/question/index.phtml:
+
+$title = 'Answers';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+    <thead>
+        <tr>
+            <th class="mdl-data-table__cell--non-numeric">Title</th>
+            <th class="mdl-data-table__cell--non-numeric">Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    <?php
+    /** @var array $answers */
+    foreach ($answers as $answer) : ?>
+        <tr>
+            <td class="mdl-data-table__cell--non-numeric"><?php echo $this->escapeHtml($answer->title);?></td>
+            <td class="mdl-data-table__cell--non-numeric">
+                <button class="mdl-button mdl-js-button mdl-button--primary" onclick="location.href='<?php echo $this->url('answer',
+                    array('action'=>'edit', 'idQuestion' => $idQuestion, 'id' => $answer->id));?>'">
+                    Edit
+                </button>
+                <button class="mdl-button mdl-js-button mdl-button--accent" onclick="location.href='<?php echo $this->url('answer',
+                    array('action'=>'delete', 'idQuestion' => $idQuestion, 'id' => $answer->id));?>'">
+                    Delete
+                </button>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
+
+<button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--2dp" onclick="location.href='<?php echo $this->url('answer', array('action'=>'add', 'idQuestion' => $idQuestion));?>'">
+    <i class="material-icons">add</i>
+</button>

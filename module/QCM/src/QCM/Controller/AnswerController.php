@@ -5,6 +5,8 @@ namespace QCM\Controller;
 
 
 use Auth\Model\User;
+use QCM\Form\AnswerForm;
+use QCM\Model\Answer;
 use QCM\Model\AnswerTable;
 use QCM\Model\QuestionTable;
 use Zend\Http\Request;
@@ -14,7 +16,7 @@ use Zend\View\Model\ViewModel;
 use QCM\Model\Question;
 use QCM\Form\QuestionForm;
 
-class QuestionController extends AbstractActionController
+class AnswerController extends AbstractActionController
 {
     protected $questionTable;
     protected $answerTable;
@@ -22,41 +24,64 @@ class QuestionController extends AbstractActionController
 
     public function indexAction()
     {
+        $idQuestion = (int) $this->params()->fromRoute('idQuestion', 0);
+        if (!$idQuestion) {
+            return $this->redirect()->toRoute('qcm', array(
+                'action' => 'add'
+            ));
+        }
         return new ViewModel(array(
-            'questions' => $this->getQuestionTable()->fetchAll(),
+            'answers' => $this->getAnswerTable()->getAnswerByQuestionId($idQuestion),
+            'idQuestion' => $idQuestion,
         ));
+    }
+
+    /**
+     * @return QuestionTable
+     */
+    public function getQuestionTable()
+    {
+        if (!$this->questionTable) {
+            $sm = $this->getServiceLocator();
+            $this->questionTable = $sm->get('QCM\Model\QuestionTable');
+        }
+        return $this->questionTable;
     }
 
     public function addAction()
     {
-        $form = new QuestionForm();
-        $form->get('submit')->setValue('Add');
+        $idQuestion = (int) $this->params()->fromRoute('idQuestion', 0);
+        if (!$idQuestion) {
+            return $this->redirect()->toRoute('qcm', array(
+                'action' => 'add',
+            ));
+        }
+        $form = new AnswerForm();
+        $form->get('submit')->setValue('Over');
 
         $request = $this->getRequest();
         /** @var Request $request */
         if ($request->isPost()) {
-            $question = new Question();
-            $form->setInputFilter($question->getInputFilter());
+            $answer = new Answer();
+            $form->setInputFilter($answer->getInputFilter());
             $form->setData($request->getPost());
-
-
-
+            var_dump($form->isValid());
             if ($form->isValid()) {
-                $question->exchangeArray($form->getData());
+                $answer->exchangeArray($form->getData());
 
-                $session = new Container('User');
-                $userTable = $this->getServiceLocator()->get('Auth\Model\UserTable');
-                /** @var User $user */
-                $user = $userTable->getUserByEmail($session->offsetGet('email'));
-                $question->user = $user->id;
+                $answer->idQuestion = $idQuestion;
+                
+                $this->getAnswerTable()->saveAnswer($answer);
 
-                $this->getQuestionTable()->saveQuestion($question);
-
-                // Redirect to list of question
-                return $this->redirect()->toRoute('qcm');
+                return $this->redirect()->toRoute('answer', array(
+                    'idQuestion' => $idQuestion,
+                ));
             }
         }
-        return array('form' => $form);
+        return array(
+            'form' => $form,
+            'idQuestion' => $idQuestion,
+            );
     }
 
     public function editAction()
@@ -68,8 +93,6 @@ class QuestionController extends AbstractActionController
             ));
         }
 
-        // Get the Album with the specified id.  An exception is thrown
-        // if it cannot be found, in which case go to the index page.
         try {
             /** @var Question $question */
             $question = $this->getQuestionTable()->getQuestion($id);
@@ -111,9 +134,12 @@ class QuestionController extends AbstractActionController
 
     public function deleteAction()
     {
+        $idQuestion = (int) $this->params()->fromRoute('idQuestion', 0);
         $id = (int)$this->params()->fromRoute('id', 0);
-        if (!$id) {
-            return $this->redirect()->toRoute('qcm');
+        if (!$idQuestion || !$id) {
+            return $this->redirect()->toRoute('qcm', array(
+                'action' => 'add',
+            ));
         }
 
         $request = $this->getRequest();
@@ -123,66 +149,22 @@ class QuestionController extends AbstractActionController
 
             if ($del == 'Yes') {
                 $id = (int)$request->getPost('id');
-                $this->getQuestionTable()->deleteQuestion($id);
+                $this->getAnswerTable()->deleteAnswer($id);
             }
 
-            // Redirect to list of questions
-            return $this->redirect()->toRoute('qcm');
+            return $this->redirect()->toRoute('answer', array(
+                'idQuestion' => $idQuestion,
+            ));
         }
 
         return array(
             'id' => $id,
-            'question' => $this->getQuestionTable()->getQuestion($id)
+            'idQuestion' => $idQuestion,
+            'answer' => $this->getAnswerTable()->getAnswer($id)
         );
     }
 
-    public function answerAction(){
-        $id = (int)$this->params()->fromRoute('id', 0);
 
-        if (!$id) {
-            return $this->redirect()->toRoute('qcm');
-        }
-
-        $answers = $this->getAnswerTable()->getAnswerByQuestionId($id);
-
-        return array(
-            'question' => $this->getQuestionTable()->getQuestion($id),
-            'answers' => $answers,
-        );
-    }
-
-    public function resultAction()
-    {
-        $id = (int)$this->params()->fromRoute('id', 0);
-
-        if (!$id) {
-            return $this->redirect()->toRoute('qcm');
-        }
-
-
-        $question = $this->getQuestionTable()->getQuestion($id);
-        $answers = $this->getAnswerTable()->fetchAll();
-        $userAnswers = $this->getUserAnswerTable()->fetchAll();
-
-
-        return new ViewModel(array(
-            'question' => $question,
-            'answers' => $answers,
-            'userAnswers' => $userAnswers
-        ));
-    }
-
-    /**
-     * @return QuestionTable
-     */
-    public function getQuestionTable()
-    {
-        if (!$this->questionTable) {
-            $sm = $this->getServiceLocator();
-            $this->questionTable = $sm->get('QCM\Model\QuestionTable');
-        }
-        return $this->questionTable;
-    }
 
     /**
      * @return AnswerTable

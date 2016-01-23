@@ -10,7 +10,6 @@ $this->headTitle($title);
     <thead>
         <tr>
             <th class="mdl-data-table__cell--non-numeric">Title</th>
-            <th class="mdl-data-table__cell--non-numeric">Artist</th>
             <th class="mdl-data-table__cell--non-numeric">Action</th>
         </tr>
     </thead>
@@ -22,12 +21,20 @@ $this->headTitle($title);
         <tr>
             <td class="mdl-data-table__cell--non-numeric"><?php echo $this->escapeHtml($question->title);?></td>
             <td class="mdl-data-table__cell--non-numeric">
-                <button class="mdl-button mdl-js-button mdl-button--primary" onclick="location.href='<?php echo $this->url('album',
-                    array('action'=>'edit', 'id' => $question->idQuestion));?>'">
+                <button class="mdl-button mdl-js-button mdl-button--primary" onclick="location.href='<?php echo $this->url('qcm',
+                    array('action'=>'answer', 'id' => $question->id));?>'">
+                    Answer
+                </button>
+                <button class="mdl-button mdl-js-button mdl-button--primary" onclick="location.href='<?php echo $this->url('answer',
+                    array('action'=>'index', 'idQuestion' => $question->id));?>'">
+                    View answers
+                </button>
+                <button class="mdl-button mdl-js-button mdl-button--primary" onclick="location.href='<?php echo $this->url('qcm',
+                    array('action'=>'edit', 'id' => $question->id));?>'">
                     Edit
                 </button>
-                <button class="mdl-button mdl-js-button mdl-button--accent" onclick="location.href='<?php echo $this->url('album',
-                    array('action'=>'delete', 'id' => $question->idQuestion));?>'">
+                <button class="mdl-button mdl-js-button mdl-button--accent" onclick="location.href='<?php echo $this->url('qcm',
+                    array('action'=>'delete', 'id' => $question->id));?>'">
                     Delete
                 </button>
             </td>
@@ -36,6 +43,6 @@ $this->headTitle($title);
     </tbody>
 </table>
 
-<button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--2dp" onclick="location.href='<?php echo $this->url('album', array('action'=>'add'));?>'">
+<button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--2dp" onclick="location.href='<?php echo $this->url('qcm', array('action'=>'add'));?>'">
     <i class="material-icons">add</i>
 </button>

@@ -22,7 +22,7 @@ class User
 
     public function exchangeArray($data)
     {
-        $this->id     = (!empty($data['user_id'])) ? $data['user_id'] : null;
+        $this->id     = (!empty($data['idUser'])) ? $data['idUser'] : null;
         $this->email  = (!empty($data['email'])) ? $data['email'] : null;
         $this->password  = (!empty($data['password'])) ? $data['password'] : null;
     }

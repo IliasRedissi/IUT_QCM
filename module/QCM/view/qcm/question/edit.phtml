@@ -1,15 +1,20 @@
 <?php
-// module/QCM/view/qcm/question/add.phtml:
+// module/Album/view/album/album/edit.phtml:
 
-$title = 'Add new Question';
+$title = 'Edit question';
 $this->headTitle($title);
 ?>
 
 <div class="mdl-card mdl-shadow--6dp">
     <?php
-    /** @var QCM\Form\QuestionForm $form */
     $form = $this->form;
-    $form->setAttribute('action', $this->url('qcm', array('action' => 'add')));
+    $form->setAttribute('action', $this->url(
+        'qcm',
+        array(
+            'action' => 'edit',
+            'id' => $this->id,
+        )
+    ));
     $form->prepare();
     echo $this->form()->openTag($form);
     echo $this->formHidden($form->get('id'));
@@ -21,12 +26,11 @@ $this->headTitle($title);
     <div class="mdl-card__supporting-text">
 
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <?php
-            echo $this->formElement($form->get('title'));
-            echo $this->formlabel($form->get('title'));
-            ?>
-            <span class="mdl-textfield__error"><?php echo $this->formElementErrors($form->get('title')); ?></span>
+            <?php echo $this->formElement($form->get('title'));
+            echo $this->formlabel($form->get('title'));?>
+            <span class="mdl-textfield__error"><?php echo $this->formElementErrors($form->get('title'));?></span>
         </div>
+
     </div>
     <div class="mdl-card__actions mdl-card--border">
         <?php

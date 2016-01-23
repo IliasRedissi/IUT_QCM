@@ -1,10 +1,11 @@
 <?php
 
-namespace Auth\Model;
+namespace QCM\Model;
 
+use QCM\Model\Question;
 use Zend\Db\TableGateway\TableGateway;
 
-class UserTable
+class QuestionTable
 {
     protected $tableGateway;
 
@@ -19,10 +20,10 @@ class UserTable
         return $resultSet;
     }
 
-    public function getUser($id)
+    public function getQuestion($id)
     {
         $id  = (int) $id;
-        $rowset = $this->tableGateway->select(array('idUser' => $id));
+        $rowset = $this->tableGateway->select(array('idQuestion' => $id));
         $row = $rowset->current();
         if (!$row) {
             throw new \Exception("Could not find row $id");
@@ -30,32 +31,27 @@ class UserTable
         return $row;
     }
 
-    public function getUserByEmail($email)
-    {
-        $rowset = $this->tableGateway->select(array('email' => $email));
-        $row = $rowset->current();
-        if (!$row) {
-            return NULL;
-        }
-        return $row;
-    }
-
-    public function saveUser(User $user)
+    public function saveQuestion(Question $question)
     {
         $data = array(
-            'email' => $user->email,
-            'password'  => $user->password,
+            'idUser' => $question->user,
+            'title'  => $question->title
         );
 
-        $id = (int) $user->id;
+        $id = (int) $question->id;
         if ($id == 0) {
             $this->tableGateway->insert($data);
         } else {
-            if ($this->getUser($id)) {
-                $this->tableGateway->update($data, array('idUser' => $id));
+            if ($this->getQuestion($id)) {
+                $this->tableGateway->update($data, array('idQuestion' => $id));
             } else {
                 throw new \Exception('User id does not exist');
             }
         }
+    }
+
+    public function deleteQuestion($id)
+    {
+        $this->tableGateway->delete(array('idQuestion' => (int) $id));
     }
 }

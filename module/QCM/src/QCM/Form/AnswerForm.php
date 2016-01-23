@@ -3,7 +3,7 @@ namespace QCM\Form;
 
 use Zend\Form\Form;
 
- class QuestionForm extends Form
+ class AnswerForm extends Form
  {
      public function __construct($name = null)
      {
@@ -15,7 +15,7 @@ use Zend\Form\Form;
              'type' => 'Hidden',
          ));
          $this->add(array(
-             'name' => 'user',
+             'name' => 'idQuestion',
              'type' => 'Hidden',
          ));
          $this->add(array(
@@ -26,11 +26,20 @@ use Zend\Form\Form;
                  'class' => 'mdl-textfield__input',
              ),
              'options' => array(
-                 'label' => 'Ask your question',
+                 'label' => 'Ask your answer',
                  'label_attributes' => array(
                      'class' => 'mdl-textfield__label',
                  ),
                  'id' => 'title',
+             ),
+         ));
+         $this->add(array(
+             'name' => 'add',
+             'attributes' => array(
+                 'type' => 'submit',
+                 'value' => 'Add',
+                 'id' => 'add',
+                 'class' => 'mdl-button mdl-button mdl-js-button mdl-js-ripple-effect',
              ),
          ));
          $this->add(array(

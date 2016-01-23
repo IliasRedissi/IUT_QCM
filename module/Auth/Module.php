@@ -58,11 +58,11 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new User());
-                    return new TableGateway('users', $dbAdapter, null, $resultSetPrototype);
+                    return new TableGateway('user', $dbAdapter, null, $resultSetPrototype);
                 },
                 'AuthService' => function ($serviceManager) {
                     $adapter = $serviceManager->get('Zend\Db\Adapter\Adapter');
-                    $dbAuthAdapter = new DbAuthAdapter ( $adapter, 'users', 'email', 'password' );
+                    $dbAuthAdapter = new DbAuthAdapter ( $adapter, 'user', 'email', 'password' );
 
                     $auth = new AuthenticationService();
                     $auth->setAdapter ( $dbAuthAdapter );
