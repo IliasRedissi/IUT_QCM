@@ -2,8 +2,11 @@
 
 namespace QCM;
 
+use Auth\Model\User;
 use QCM\Model\Answer;
 use QCM\Model\AnswerTable;
+use QCM\Model\UserAnswer;
+use QCM\Model\UserAnswerTable;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use QCM\Model\Question;
@@ -57,6 +60,17 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Answer());
                     return new TableGateway('answer', $dbAdapter, null, $resultSetPrototype);
+                },
+                'QCM\Model\UserAnswerTable' =>  function($sm) {
+                    $tableGateway = $sm->get('UserAnswerTableGateway');
+                    $table = new UserAnswerTable($tableGateway);
+                    return $table;
+                },
+                'UserAnswerTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new UserAnswer());
+                    return new TableGateway('useranswer', $dbAdapter, null, $resultSetPrototype);
                 },
             ),
         );

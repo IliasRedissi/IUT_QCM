@@ -9,6 +9,7 @@ $this->headTitle($title);
     <thead>
         <tr>
             <th class="mdl-data-table__cell--non-numeric">Title</th>
+            <th class="mdl-data-table__cell--non-numeric">Count</th>
             <th class="mdl-data-table__cell--non-numeric">Action</th>
         </tr>
     </thead>
@@ -16,9 +17,22 @@ $this->headTitle($title);
     <tbody>
     <?php
     /** @var array $answers */
+    /** @var \QCM\Model\Answer $answer */
+    /** @var array $userAnswers */
+    /** @var \QCM\Model\UserAnswer $userAnswer */
     foreach ($answers as $answer) : ?>
         <tr>
+        <?php
+        $count = 0;
+        foreach ($userAnswers as $userAnswer) {
+
+            if ($userAnswer->idAnswer == $answer->id) {
+                $count++;
+            }
+        }
+        ?>
             <td class="mdl-data-table__cell--non-numeric"><?php echo $this->escapeHtml($answer->title);?></td>
+            <td class="mdl-data-table__cell--non-numeric"><?php echo $count ?></td>
             <td class="mdl-data-table__cell--non-numeric">
                 <button class="mdl-button mdl-js-button mdl-button--primary" onclick="location.href='<?php echo $this->url('answer',
                     array('action'=>'edit', 'idQuestion' => $idQuestion, 'id' => $answer->id));?>'">

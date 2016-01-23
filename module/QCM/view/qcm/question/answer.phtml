@@ -6,7 +6,7 @@
 
  $url = $this->url('qcm', array(
      'action' => 'answer',
-     'id'     => $this->id,
+     'id'     => $question->id,
  ));
  ?>
 
@@ -18,7 +18,7 @@
         <div class="mdl-card__supporting-text">
             <?php foreach ($answers as $answer) : ?>
             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for='option-<?php echo $answer->id; ?>'>
-                <input type="radio" id='option-<?php echo $answer->id; ?>' class="mdl-radio__button" name="options" value='<?php echo $answer->id; ?>' checked>
+                <input type="radio" id='option-<?php echo $answer->id; ?>' class="mdl-radio__button" name="options" value='<?php echo $answer->id; ?>' required>
                 <span class="mdl-radio__label"><?php echo $answer->title; ?></span>
             </label>
                 <br>
@@ -28,9 +28,6 @@
             <input type="hidden" name="id" value="<?php echo (int) $question->id; ?>" />
             <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--accent" value="Yes" type="submit" name="del">
                 <i class="material-icons">check</i>
-            </button>
-            <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" value="No" type="submit" name="del">
-                <i class="material-icons">clear</i>
             </button>
         </div>
     </form>

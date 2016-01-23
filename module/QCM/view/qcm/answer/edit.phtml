@@ -1,7 +1,7 @@
 <?php
 // module/Album/view/album/album/edit.phtml:
 
-$title = 'Edit question';
+$title = 'Edit answer';
 $this->headTitle($title);
 ?>
 
@@ -9,16 +9,17 @@ $this->headTitle($title);
     <?php
     $form = $this->form;
     $form->setAttribute('action', $this->url(
-        'qcm',
+        'answer',
         array(
-            'action' => 'edit',
-            'id' => $this->id,
+            'action' => 'delete',
+            'id'     => $this->id,
+            'idQuestion'     => $this->idQuestion,
         )
     ));
     $form->prepare();
     echo $this->form()->openTag($form);
     echo $this->formHidden($form->get('id'));
-    echo $this->formHidden($form->get('user'));
+    echo $this->formHidden($form->get('idQuestion'));
     ?>
     <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
         <h2 class="mdl-card__title-text"><?php echo $this->escapeHtml($title); ?></h2>

@@ -9,6 +9,7 @@ use QCM\Form\AnswerForm;
 use QCM\Model\Answer;
 use QCM\Model\AnswerTable;
 use QCM\Model\QuestionTable;
+use QCM\Model\UserAnswerTable;
 use Zend\Http\Request;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Session\Container;
@@ -32,6 +33,7 @@ class AnswerController extends AbstractActionController
         }
         return new ViewModel(array(
             'answers' => $this->getAnswerTable()->getAnswerByQuestionId($idQuestion),
+            'userAnswers' => $this->getUserAnswerTable()->fetchAll(),
             'idQuestion' => $idQuestion,
         ));
     }
@@ -86,16 +88,17 @@ class AnswerController extends AbstractActionController
 
     public function editAction()
     {
-        $id = (int) $this->params()->fromRoute('id', 0);
-        if (!$id) {
+        $idQuestion = (int) $this->params()->fromRoute('idQuestion', 0);
+        $id = (int)$this->params()->fromRoute('id', 0);
+        if (!$idQuestion || !$id) {
             return $this->redirect()->toRoute('qcm', array(
-                'action' => 'add'
+                'action' => 'add',
             ));
         }
 
         try {
-            /** @var Question $question */
-            $question = $this->getQuestionTable()->getQuestion($id);
+            /** @var Answer $answer */
+            $answer = $this->getAnswerTable()->getAnswer($id);
         }
         catch (\Exception $ex) {
             return $this->redirect()->toRoute('qcm', array(
@@ -103,32 +106,29 @@ class AnswerController extends AbstractActionController
             ));
         }
 
-        $form  = new QuestionForm();
-        $form->bind($question);
+        $form  = new AnswerForm();
+        $form->bind($answer);
         $form->get('submit')->setAttribute('value', 'Edit');
 
         /** @var Request $request */
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $form->setInputFilter($question->getInputFilter());
+            $form->setInputFilter($answer->getInputFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $session = new Container('User');
-                $userTable = $this->getServiceLocator()->get('Auth\Model\UserTable');
-                /** @var User $user */
-                $user = $userTable->getUserByEmail($session->offsetGet('email'));
-                $question->user = $user->id;
-                $question->id = $id;
-                $this->getQuestionTable()->saveQuestion($question);
+                $answer->idQuestion = $idQuestion;
+                $answer->id = $id;
+                $this->getAnswerTable()->saveAnswer($answer);
 
-                return $this->redirect()->toRoute('qcm');
+                return $this->redirect()->toRoute('answer');
             }
         }
 
         return array(
             'id' => $id,
             'form' => $form,
+            'idQuestion' => $idQuestion,
         );
     }
 
@@ -179,7 +179,7 @@ class AnswerController extends AbstractActionController
     }
 
     /**
-     * @return array|object
+     * @return UserAnswerTable
      */
     public function getUserAnswerTable()
     {

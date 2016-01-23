@@ -7,6 +7,8 @@ namespace QCM\Controller;
 use Auth\Model\User;
 use QCM\Model\AnswerTable;
 use QCM\Model\QuestionTable;
+use QCM\Model\UserAnswer;
+use QCM\Model\UserAnswerTable;
 use Zend\Http\Request;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Session\Container;
@@ -145,6 +147,25 @@ class QuestionController extends AbstractActionController
 
         $answers = $this->getAnswerTable()->getAnswerByQuestionId($id);
 
+        $request = $this->getRequest();
+        /** @var Request $request */
+        if ($request->isPost()) {
+            $idAnswer = $request->getPost('options', null);
+            $userAnswer = new UserAnswer();
+            $userAnswer->idAnswer = $idAnswer;
+
+            $session = new Container('User');
+            $userTable = $this->getServiceLocator()->get('Auth\Model\UserTable');
+            /** @var User $user */
+            $user = $userTable->getUserByEmail($session->offsetGet('email'));
+            $userAnswer->idUser = $user->id;
+
+            $this->getUserAnswerTable()->saveUserAnswer($userAnswer);
+
+            // Redirect to list of questions
+            return $this->redirect()->toRoute('qcm');
+        }
+
         return array(
             'question' => $this->getQuestionTable()->getQuestion($id),
             'answers' => $answers,
@@ -197,7 +218,7 @@ class QuestionController extends AbstractActionController
     }
 
     /**
-     * @return array|object
+     * @return UserAnswerTable
      */
     public function getUserAnswerTable()
     {
