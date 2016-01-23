@@ -26,4 +26,4 @@ Password
     test
 
 ###MCD
-![MCD](http://imgur.com/erQ0AAf)
+http://imgur.com/erQ0AAf
