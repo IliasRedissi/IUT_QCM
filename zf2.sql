@@ -107,7 +107,7 @@ INSERT INTO `question` (`idQuestion`, `idUser`, `title`) VALUES
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
-  `idUser` int(11) NOT NULL,
+  `idUser` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(254) DEFAULT NULL,
   `password` varchar(254) DEFAULT NULL,
   PRIMARY KEY (`idUser`)
@@ -123,7 +123,7 @@ TRUNCATE TABLE `user`;
 --
 
 INSERT INTO `user` (`idUser`, `email`, `password`) VALUES
-(0, 'test@test.com', 'c3402aa8e08083903e88ced9ebf72146ce5307f0'),
+(2, 'test@test.com', 'c3402aa8e08083903e88ced9ebf72146ce5307f0'),
 (1, NULL, '90c62b7c360038ecf0764fbf2e1035d87f39eeb7');
 
 -- --------------------------------------------------------
